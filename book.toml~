@@ -1,0 +1,7 @@
+[book]
+authors = ["Mark Pearrow"]
+language = "en"
+src = "src"
+title = "Codon Docs"
+[output.html]
+mathjax-support = true
