@@ -1,0 +1,432 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Release notes - Codon Docs</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Codon Docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>Below you can find release notes for each major Codon release,
+listing improvements, updates, optimizations and more for each
+new version.</p>
+<p>These release notes generally do not include small bug fixes. See the
+<a href="https://github.com/exaloop/codon/issues?q=is%3Aissue+is%3Aclosed">closed issues</a>
+for more information.</p>
+<h1 id="v018"><a class="header" href="#v018">v0.18</a></h1>
+<h2 id="license-change"><a class="header" href="#license-change">License change</a></h2>
+<ul>
+<li>Codon is now truly open source under the Apache license.</li>
+<li>Exaloop continues to offer enterprise licenses with added support, services
+and custom solutions for organizations that want and need them. Contact
+<a href="mailto:info@exaloop.io">info@exaloop.io</a> to learn more.</li>
+</ul>
+<h2 id="new-codon-native-numpy-implementation"><a class="header" href="#new-codon-native-numpy-implementation">New Codon-native NumPy implementation</a></h2>
+<ul>
+<li>New NumPy implementation for Codon, written in Codon itself.</li>
+<li>Interoperable with Codon's multithreading and GPU backends.</li>
+<li>NumPy-specific compiler optimizations (e.g. operator fusion optimizations)
+added to Codon's standard optimization suite.</li>
+<li>Learn more in the <a href="../interop/numpy.html">Codon-NumPy docs</a>.</li>
+</ul>
+<h2 id="new-compiler-options"><a class="header" href="#new-compiler-options">New compiler options</a></h2>
+<ul>
+<li><code>-fast-math</code> will enable <a href="https://llvm.org/docs/LangRef.html#fast-math-flags">fast-math optimizations</a>.
+Use this flag with caution as it changes floating-point semantics.</li>
+</ul>
+<h1 id="v017"><a class="header" href="#v017">v0.17</a></h1>
+<h2 id="llvm-upgrade"><a class="header" href="#llvm-upgrade">LLVM upgrade</a></h2>
+<p>Upgraded to LLVM 17 (from 15).</p>
+<h2 id="standard-library-updates"><a class="header" href="#standard-library-updates">Standard library updates</a></h2>
+<ul>
+<li>New floating-point types <code>float16</code>, <code>bfloat16</code> and <code>float128</code>.</li>
+<li>Updates to several existing functions, such as adding <code>key</code> and
+<code>default</code> arguments to <code>min()</code> and <code>max()</code>.</li>
+<li>Slice arguments can now be of any type, not just <code>int</code>.</li>
+<li>Added <code>input()</code> function.</li>
+</ul>
+<h2 id="other-improvements"><a class="header" href="#other-improvements">Other improvements</a></h2>
+<ul>
+<li>Property setters are now supported.</li>
+<li>Updated import logic to match CPython's more closely.</li>
+<li>Several improvements to dynamic polymorphism to match CPython more
+closely.</li>
+</ul>
+<h2 id="new-compiler-options-1"><a class="header" href="#new-compiler-options-1">New compiler options</a></h2>
+<ul>
+<li><code>-disable-exceptions</code> will disable exceptions, potentially eliding
+various runtime checks (e.g. bounds checks for lists). This flag
+should only be used if you know that no exceptions will be raised
+in the given program.</li>
+</ul>
+<h1 id="v016"><a class="header" href="#v016">v0.16</a></h1>
+<h2 id="python-extensions"><a class="header" href="#python-extensions">Python extensions</a></h2>
+<p>A new build mode is added to <code>codon</code> called <code>pyext</code> which compiles
+to Python extension modules, allowing Codon code to be imported and
+called directly from Python (similar to Cython). Please see the
+<a href="../interop/pyext.html">docs</a> for more information and usage examples.</p>
+<h2 id="standard-library-updates-1"><a class="header" href="#standard-library-updates-1">Standard library updates</a></h2>
+<ul>
+<li>
+<p>Various additions to the standard library, such as <code>math.fsum()</code> and
+the built-in <code>pow()</code>.</p>
+</li>
+<li>
+<p>Added <code>complex64</code>, which is a complex number with 32-bit float real and
+imaginary components.</p>
+</li>
+<li>
+<p>Better <code>Int[N]</code> and <code>UInt[N]</code> support: can now convert ints wider than
+64-bit to string; now supports more operators.</p>
+</li>
+</ul>
+<h2 id="more-python-specific-optimizations"><a class="header" href="#more-python-specific-optimizations">More Python-specific optimizations</a></h2>
+<p>New optimizations for specific patterns including <code>any()</code>/<code>all()</code> and
+multiple list concatenations. These patterns are now recognized and
+optimized in Codon's IR.</p>
+<h2 id="static-expressions"><a class="header" href="#static-expressions">Static expressions</a></h2>
+<p>Codon now supports more compile-time static functions, such as <code>staticenumerate</code>.</p>
+<h1 id="v015"><a class="header" href="#v015">v0.15</a></h1>
+<h2 id="union-types"><a class="header" href="#union-types">Union types</a></h2>
+<p>Codon adds support for union types (e.g., <code>Union[int, float]</code>):</p>
+<pre><code>def foo(cmd) -&gt; Union:
+    if cmd == 'int': return 1
+    else: return "s"
+foo('int')        # type is Union[int,str]
+5 + foo('int')    # 6
+'a' + foo('str')  # as
+</code></pre>
+<h2 id="dynamic-inheritance"><a class="header" href="#dynamic-inheritance">Dynamic inheritance</a></h2>
+<p>Dynamic inheritance and polymorphism are now supported:</p>
+<pre><code>class A:
+    def __repr__(): return 'A'
+class B(A):
+    def __repr__(): return 'B'
+l = [A(), B(), A()]  # type of l is List[A]
+print(l)  # [A, B, A]
+</code></pre>
+<p>This feature is still a work in progress.</p>
+<h2 id="llvm-upgrade-1"><a class="header" href="#llvm-upgrade-1">LLVM upgrade</a></h2>
+<p>Upgraded to LLVM 15 (from 12). Note that LLVM 15 now uses
+<a href="https://llvm.org/docs/OpaquePointers.html">opaque pointers</a>,
+e.g. <code>ptr</code> instead of <code>i8*</code> or <code>i64*</code>, which affects <code>@llvm</code>
+functions written in Codon as well as LLVM IR output of
+<code>codon build</code>.</p>
+<h2 id="standard-library"><a class="header" href="#standard-library">Standard library</a></h2>
+<p><code>random</code> module now matches Python exactly for the same seed.</p>
+<h1 id="v014"><a class="header" href="#v014">v0.14</a></h1>
+<h2 id="gpu-support"><a class="header" href="#gpu-support">GPU support</a></h2>
+<p>GPU kernels can now be written and called in Codon. Existing
+loops can be parallelized on the GPU with the <code>@par(gpu=True)</code>
+annotation. Please see the <a href="../advanced/gpu.html">docs</a> for
+more information and examples.</p>
+<h2 id="semantics"><a class="header" href="#semantics">Semantics</a></h2>
+<p>Added <code>-numerics</code> flag, which specifies semantics of various
+numeric operations:</p>
+<ul>
+<li><code>-numerics=c</code> (default): C semantics; best performance</li>
+<li><code>-numerics=py</code>: Python semantics (checks for zero divisors
+and raises <code>ZeroDivisionError</code>, and adds domain checks to <code>math</code>
+functions); might slightly decrease performance.</li>
+</ul>
+<h2 id="types"><a class="header" href="#types">Types</a></h2>
+<p>Added <code>float32</code> type to represent 32-bit floats (equivalent to C's
+<code>float</code>). All <code>math</code> functions now have <code>float32</code> overloads.</p>
+<h2 id="parallelism"><a class="header" href="#parallelism">Parallelism</a></h2>
+<p>Added <code>collapse</code> option to <code>@par</code>:</p>
+<pre><code class="language-python">@par(collapse=2)  # parallelize entire iteration space of 2 loops
+for i in range(N):
+    for j in range(N):
+        do_work(i, j)
+</code></pre>
+<h2 id="standard-library-1"><a class="header" href="#standard-library-1">Standard library</a></h2>
+<p>Added <code>collections.defaultdict</code>.</p>
+<h2 id="python-interoperability"><a class="header" href="#python-interoperability">Python interoperability</a></h2>
+<p>Various Python interoperability improvements: can now use <code>isinstance</code>
+on Python objects/types and can now catch Python exceptions by name.</p>
+<h1 id="v013"><a class="header" href="#v013">v0.13</a></h1>
+<h2 id="language"><a class="header" href="#language">Language</a></h2>
+<h3 id="scoping"><a class="header" href="#scoping">Scoping</a></h3>
+<p>Scoping was changed to match Python scoping. For example:</p>
+<pre><code class="language-python">if condition:
+    x = 42
+
+print(x)
+</code></pre>
+<p>If condition is <code>False</code>, referencing <code>x</code> causes a <code>NameError</code>
+to be raised at runtime, much like what happens in Python.
+There is zero new performance overhead for code using the old
+scoping; code using the new scoping as above generates a flag to
+indicate whether the given variable has been assigned.</p>
+<p>Moreover, variables can now be assigned to different types:</p>
+<pre><code class="language-python">x = 42
+print(x)  # 42
+x = 'hello'
+print(x)  # hello
+</code></pre>
+<p>The same applies in Jupyter or JIT environments.</p>
+<h3 id="static-methods"><a class="header" href="#static-methods">Static methods</a></h3>
+<p>Added support for <code>@staticmethod</code> method decorator.
+Class variables are also supported:</p>
+<pre><code class="language-python">class Cls:
+    a = 5  # or "a: ClassVar[int] = 5" (PEP 526)
+
+    @staticmethod
+    def method():
+        print('hello world')
+
+c = Cls()
+Cls.a, Cls.method(), c.a, c.method()  # supported
+</code></pre>
+<h3 id="tuple-handling"><a class="header" href="#tuple-handling">Tuple handling</a></h3>
+<p>Arbitrary classes can now be converted to tuples via the <code>tuple()</code>
+function.</p>
+<h3 id="void-type"><a class="header" href="#void-type">Void type</a></h3>
+<p>The <code>void</code> type has been completely removed in favor of the new
+and Pythonic <code>NoneType</code>, which compiles to an empty LLVM struct.
+This does not affect C interoperability as the empty struct type
+is replaced by <code>void</code> by LLVM.</p>
+<h3 id="standard-library-2"><a class="header" href="#standard-library-2">Standard library</a></h3>
+<p>The <code>re</code> module is now fully supported, and uses
+<a href="https://github.com/google/re2">Google's <code>re2</code></a> as a backend. Future
+versions of Codon will also include an additional regex optimization
+pass to compile constant ("known at compile time") regular expressions
+to native code.</p>
+<h2 id="c-variables"><a class="header" href="#c-variables">C variables</a></h2>
+<p>Global variables with C linkage can now be imported via <code>from C import</code>:</p>
+<pre><code class="language-python"># assumes the C variable "long foo"
+from C import foo: int
+print(foo)
+</code></pre>
+<h2 id="parallelism-1"><a class="header" href="#parallelism-1">Parallelism</a></h2>
+<p>Numerous improvements to the OpenMP backend, including the addition
+of task-based reductions:</p>
+<pre><code class="language-python">total = 0
+@par
+for a in some_arbitrary_generator():
+    total += do_work(a)  # now converted to task reduction
+</code></pre>
+<h2 id="python-interoperability-1"><a class="header" href="#python-interoperability-1">Python interoperability</a></h2>
+<p>Included revamped <code>codon</code> module for Python, with <code>@codon.jit</code> decorator
+for compiling Python code in existing codebases. Further improved and
+optimized the Python bridge. Please see the <a href="../interop/decorator.html">docs</a>
+for more information.</p>
+<h2 id="codon-ir"><a class="header" href="#codon-ir">Codon IR</a></h2>
+<p>New capture analysis pass for Codon IR for improving tasks such as dead
+code elimination and side effect analysis. This allows Codon IR to deduce
+whether arbitrary, compilable Python expressions have side effects, capture
+variables, and more.</p>
+<h2 id="code-generation-and-optimizations"><a class="header" href="#code-generation-and-optimizations">Code generation and optimizations</a></h2>
+<p>A new dynamic allocation optimization pass is included, which 1)
+removes unused allocations (e.g. instantiating a class but never
+using it) and 2) demotes small heap allocations to stack (<code>alloca</code>)
+allocations when possible. The latter optimization can frequently
+remove any overhead associated with instantiating most classes.</p>
+<h2 id="command-line-tool"><a class="header" href="#command-line-tool">Command-line tool</a></h2>
+<p>The <code>codon</code> binary can now compile to shared libraries using the <code>-lib</code>
+option to <code>codon build</code> (or it can be deduced from a <code>.so</code> or <code>.dylib</code>
+extension on the output file name).</p>
+<h2 id="errors"><a class="header" href="#errors">Errors</a></h2>
+<p>Added support for multiple error reporting.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../intro/differences.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../intro/roadmap.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../intro/differences.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../intro/roadmap.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

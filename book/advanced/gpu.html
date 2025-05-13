@@ -1,0 +1,476 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>GPU programming - Codon Docs</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Codon Docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>Codon supports GPU programming through a native GPU backend.
+Currently, only Nvidia devices are supported.
+Here is a simple example:</p>
+<pre><code class="language-python">import gpu
+
+@gpu.kernel
+def hello(a, b, c):
+    i = gpu.thread.x
+    c[i] = a[i] + b[i]
+
+a = [i for i in range(16)]
+b = [2*i for i in range(16)]
+c = [0 for _ in range(16)]
+
+hello(a, b, c, grid=1, block=16)
+print(c)
+</code></pre>
+<p>which outputs:</p>
+<pre><code>[0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45]
+</code></pre>
+<p>The same code can be written using Codon's <code>@par</code> syntax:</p>
+<pre><code class="language-python">a = [i for i in range(16)]
+b = [2*i for i in range(16)]
+c = [0 for _ in range(16)]
+
+@par(gpu=True)
+for i in range(16):
+    c[i] = a[i] + b[i]
+
+print(c)
+</code></pre>
+<p>Below is a more comprehensive example for computing the <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot
+set</a>, and plotting it
+using NumPy/Matplotlib:</p>
+<pre><code class="language-python">from python import numpy as np
+from python import matplotlib.pyplot as plt
+import gpu
+
+MAX    = 1000  # maximum Mandelbrot iterations
+N      = 4096  # width and height of image
+pixels = [0 for _ in range(N * N)]
+
+def scale(x, a, b):
+    return a + (x/N)*(b - a)
+
+@gpu.kernel
+def mandelbrot(pixels):
+    idx = (gpu.block.x * gpu.block.dim.x) + gpu.thread.x
+    i, j = divmod(idx, N)
+    c = complex(scale(j, -2.00, 0.47), scale(i, -1.12, 1.12))
+    z = 0j
+    iteration = 0
+
+    while abs(z) &lt;= 2 and iteration &lt; MAX:
+        z = z**2 + c
+        iteration += 1
+
+    pixels[idx] = int(255 * iteration/MAX)
+
+mandelbrot(pixels, grid=(N*N)//1024, block=1024)
+plt.imshow(np.array(pixels).reshape(N, N))
+plt.show()
+</code></pre>
+<p>The GPU version of the Mandelbrot code is about 450 times faster
+than an equivalent CPU version.</p>
+<p>GPU kernels are marked with the <code>@gpu.kernel</code> annotation, and
+compiled specially in Codon's backend. Kernel functions can
+use the vast majority of features supported in Codon, with a
+couple notable exceptions:</p>
+<ul>
+<li>
+<p>Exception handling is not supported inside the kernel, meaning
+kernel code should not throw or catch exceptions. <code>raise</code>
+statements inside the kernel are marked as unreachable and
+optimized out.</p>
+</li>
+<li>
+<p>Functionality related to I/O is not supported (e.g. you can't
+open a file in the kernel).</p>
+</li>
+<li>
+<p>A few other modules and functions are not allowed, such as the
+<code>re</code> module (which uses an external regex library) or the <code>os</code>
+module.</p>
+</li>
+</ul>
+<style>
+.mdbook-gitbook-hints {
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-left: 0.25em solid var(--mdbook-gitbook-hints-color);
+}
+
+.mdbook-gitbook-hints>*:first-child {
+  margin-top: 0;
+}
+
+.mdbook-gitbook-hints>*:last-child {
+  margin-bottom: 0;
+}
+
+.mdbook-gitbook-hints-icon {
+  display: inline-block;
+  color: var(--mdbook-gitbook-hints-color);
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / 100%;
+  mask: no-repeat center / 100%;
+  -webkit-mask-image: var(--mdbook-gitbook-hints-icon);
+  mask-image: var(--mdbook-gitbook-hints-icon);
+}
+
+/* Icons from https://icon-sets.iconify.design/material-symbols */
+.mdbook-gitbook-hints-info {
+  --mdbook-gitbook-hints-color: rgb(9, 105, 218);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11q-.425 0-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-warning {
+  --mdbook-gitbook-hints-color: rgb(154, 103, 0);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363q-.125-.225-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3q.25 0 .488.125t.387.375l9.25 16q.15.25.138.513t-.138.487q-.125.225-.35.363t-.5.137zm1.725-2h15.1L12 6zM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10q-.425 0-.712.288T11 11v3q0 .425.288.713T12 15m0-2.5"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-danger {
+  --mdbook-gitbook-hints-color: rgb(207, 34, 46);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17m0-4q.425 0 .713-.288T13 12V8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8v4q0 .425.288.713T12 13m-3.35 7H6q-.825 0-1.412-.587T4 18v-2.65L2.075 13.4q-.275-.3-.425-.662T1.5 12q0-.375.15-.737t.425-.663L4 8.65V6q0-.825.588-1.412T6 4h2.65l1.95-1.925q.3-.275.663-.425T12 1.5q.375 0 .738.15t.662.425L15.35 4H18q.825 0 1.413.588T20 6v2.65l1.925 1.95q.275.3.425.663t.15.737q0 .375-.15.738t-.425.662L20 15.35V18q0 .825-.587 1.413T18 20h-2.65l-1.95 1.925q-.3.275-.662.425T12 22.5q-.375 0-.737-.15t-.663-.425zm.85-2l2.5 2.5l2.5-2.5H18v-3.5l2.5-2.5L18 9.5V6h-3.5L12 3.5L9.5 6H6v3.5L3.5 12L6 14.5V18zm2.5-6"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-success {
+  --mdbook-gitbook-hints-color: rgb(26, 127, 55);
+  --mdbook-gitbook-hints-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath fill='%23000' d='M18 2a16 16 0 1 0 16 16A16 16 0 0 0 18 2m0 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14' class='clr-i-outline clr-i-outline-path-1'/%3E%3Cpath fill='%23000' d='M28 12.1a1 1 0 0 0-1.41 0l-11.1 11.05l-6-6A1 1 0 0 0 8 18.53L15.49 26L28 13.52a1 1 0 0 0 0-1.42' class='clr-i-outline clr-i-outline-path-2'/%3E%3Cpath fill='none' d='M0 0h36v36H0z'/%3E%3C/svg%3E");
+}
+
+</style>
+<div class="mdbook-gitbook-hints mdbook-gitbook-hints-warning">
+  <span class="mdbook-gitbook-hints-icon"></span>
+  The GPU module is under active development. APIs and semantics
+might change between Codon releases.
+</div>
+<h1 id="invoking-the-kernel"><a class="header" href="#invoking-the-kernel">Invoking the kernel</a></h1>
+<p>The kernel can be invoked via a simple call with added <code>grid</code> and
+<code>block</code> parameters. These parameters define the grid and block
+dimensions, respectively. Recall that GPU execution involves a <em>grid</em>
+of (<code>X</code> x <code>Y</code> x <code>Z</code>) <em>blocks</em> where each block contains (<code>x</code> x <code>y</code> x <code>z</code>)
+executing threads. Device-specific restrictions on grid and block sizes
+apply.</p>
+<p>The <code>grid</code> and <code>block</code> parameters can be one of:</p>
+<ul>
+<li>Single integer <code>x</code>, giving dimensions <code>(x, 1, 1)</code></li>
+<li>Tuple of two integers <code>(x, y)</code>, giving dimensions <code>(x, y, 1)</code></li>
+<li>Tuple of three integers <code>(x, y, z)</code>, giving dimensions <code>(x, y, z)</code></li>
+<li>Instance of <code>gpu.Dim3</code> as in <code>Dim3(x, y, z)</code>, specifying the three dimensions</li>
+</ul>
+<h1 id="gpu-intrinsics"><a class="header" href="#gpu-intrinsics">GPU intrinsics</a></h1>
+<p>Codon's GPU module provides many of the same intrinsics that CUDA does:</p>
+<div class="table-wrapper"><table><thead><tr><th>Codon</th><th>Description</th><th>CUDA equivalent</th></tr></thead><tbody>
+<tr><td><code>gpu.thread.x</code></td><td>x-coordinate of current thread in block</td><td><code>threadId.x</code></td></tr>
+<tr><td><code>gpu.block.x</code></td><td>x-coordinate of current block in grid</td><td><code>blockIdx.x</code></td></tr>
+<tr><td><code>gpu.block.dim.x</code></td><td>x-dimension of block</td><td><code>blockDim.x</code></td></tr>
+<tr><td><code>gpu.grid.dim.x</code></td><td>x-dimension of grid</td><td><code>gridDim.x</code></td></tr>
+</tbody></table>
+</div>
+<p>The same applies for the <code>y</code> and <code>z</code> coordinates. The <code>*.dim</code> objects are instances
+of <code>gpu.Dim3</code>.</p>
+<h1 id="math-functions"><a class="header" href="#math-functions">Math functions</a></h1>
+<p>All the functions in the <code>math</code> module are supported in kernel functions, and
+are automatically replaced with GPU-optimized versions:</p>
+<pre><code class="language-python">import math
+import gpu
+
+@gpu.kernel
+def hello(x):
+    i = gpu.thread.x
+    x[i] = math.sqrt(x[i])  # uses __nv_sqrt from libdevice
+
+x = [float(i) for i in range(10)]
+hello(x, grid=1, block=10)
+print(x)
+</code></pre>
+<p>gives:</p>
+<pre><code>[0, 1, 1.41421, 1.73205, 2, 2.23607, 2.44949, 2.64575, 2.82843, 3]
+</code></pre>
+<h1 id="libdevice"><a class="header" href="#libdevice">Libdevice</a></h1>
+<p>Codon uses <a href="https://docs.nvidia.com/cuda/libdevice-users-guide/index.html">libdevice</a>
+for GPU-optimized math functions. The default libdevice path is
+<code>/usr/local/cuda/nvvm/libdevice/libdevice.10.bc</code>. An alternative path can be specified
+via the <code>-libdevice</code> compiler flag.</p>
+<h1 id="working-with-raw-pointers"><a class="header" href="#working-with-raw-pointers">Working with raw pointers</a></h1>
+<p>By default, objects are converted entirely to their GPU counterparts, which have
+the same data layout as the original objects (although the Codon compiler might perform
+optimizations by swapping a CPU implementation of a data type with a GPU-optimized
+implementation that exposes the same API). This preserves all of Codon/Python's
+standard semantics within the kernel.</p>
+<p>It is possible to use a kernel with raw pointers via <code>gpu.raw</code>, which corresponds
+to how the kernel would be written in C++/CUDA:</p>
+<pre><code class="language-python">import gpu
+
+@gpu.kernel
+def hello(a, b, c):
+    i = gpu.thread.x
+    c[i] = a[i] + b[i]
+
+a = [i for i in range(16)]
+b = [2*i for i in range(16)]
+c = [0 for _ in range(16)]
+
+# call the kernel with three int-pointer arguments:
+hello(gpu.raw(a), gpu.raw(b), gpu.raw(c), grid=1, block=16)
+print(c)  # output same as first snippet's
+</code></pre>
+<p><code>gpu.raw</code> can avoid an extra pointer indirection, but outputs a Codon <code>Ptr</code> object,
+meaning the corresponding kernel parameters will not have the full list API, instead
+having the more limited <code>Ptr</code> API (which primarily just supports indexing/assignment).</p>
+<h1 id="object-conversions"><a class="header" href="#object-conversions">Object conversions</a></h1>
+<p>A hidden API is used to copy objects to and from the GPU device. This API consists of
+two new <em>magic methods</em>:</p>
+<ul>
+<li>
+<p><code>__to_gpu__(self)</code>: Allocates the necessary GPU memory and copies the object <code>self</code> to
+the device.</p>
+</li>
+<li>
+<p><code>__from_gpu__(self, gpu_object)</code>: Copies the GPU memory of <code>gpu_object</code> (which is
+a value returned by <code>__to_gpu__</code>) back to the CPU object <code>self</code>.</p>
+</li>
+</ul>
+<p>For primitive types like <code>int</code> and <code>float</code>, <code>__to_gpu__</code> simply returns <code>self</code> and
+<code>__from_gpu__</code> does nothing. These methods are defined for all the built-in types <em>and</em>
+are automatically generated for user-defined classes, so most objects can be transferred
+back and forth from the GPU seamlessly. A user-defined class that makes use of raw pointers
+or other low-level constructs will have to define these methods for GPU use. Please refer
+to the <code>gpu</code> module for implementation examples.</p>
+<h1 id="pargputrue"><a class="header" href="#pargputrue"><code>@par(gpu=True)</code></a></h1>
+<p>Codon's <code>@par</code> syntax can be used to seamlessly parallelize existing loops on the GPU,
+without needing to explicitly write them as kernels. For loop nests, the <code>collapse</code> argument
+can be used to cover the entire iteration space on the GPU. For example, here is the Mandelbrot
+code above written using <code>@par</code>:</p>
+<pre><code class="language-python">MAX    = 1000  # maximum Mandelbrot iterations
+N      = 4096  # width and height of image
+pixels = [0 for _ in range(N * N)]
+
+def scale(x, a, b):
+    return a + (x/N)*(b - a)
+
+@par(gpu=True, collapse=2)
+for i in range(N):
+    for j in range(N):
+        c = complex(scale(j, -2.00, 0.47), scale(i, -1.12, 1.12))
+        z = 0j
+        iteration = 0
+
+        while abs(z) &lt;= 2 and iteration &lt; MAX:
+            z = z**2 + c
+            iteration += 1
+
+        pixels[i*N + j] = int(255 * iteration/MAX)
+</code></pre>
+<p>Note that the <code>gpu=True</code> option disallows shared variables (i.e. assigning out-of-loop
+variables in the loop body) as well as reductions. The other GPU-specific restrictions
+described here apply as well.</p>
+<h1 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h1>
+<p>CUDA errors resulting in kernel abortion are printed, and typically arise from invalid
+code in the kernel, either via using exceptions or using unsupported modules/objects.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../advanced/parallel.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../advanced/pipelines.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../advanced/parallel.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../advanced/pipelines.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

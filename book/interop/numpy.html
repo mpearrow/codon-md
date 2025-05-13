@@ -1,0 +1,759 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>NumPy support - Codon Docs</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Codon Docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>Codon ships with a feature-complete, fully-compiled native NumPy implementation.
+It uses the same API as NumPy, but re-implements everything in Codon itself,
+allowing for a range of optimizations and performance improvements. Codon-NumPy
+works with Codon's Python interoperability (you can transfer arrays to and from
+regular Python seamlessly), parallel backend (you can do array operations in
+parallel), and GPU backend (you can transfer arrays to and from the GPU seamlessly,
+and operate on them on the GPU).</p>
+<h1 id="getting-started"><a class="header" href="#getting-started">Getting started</a></h1>
+<p>Importing <code>numpy</code> in Codon will use Codon-NumPy (as opposed to
+<code>from python import numpy</code>, which would use standard NumPy):</p>
+<pre><code class="language-python">import numpy as np
+</code></pre>
+<p>We can then create and manipulate arrays just like in standard NumPy:</p>
+<pre><code class="language-python">x = np.arange(15, dtype=np.int64).reshape(3, 5)
+print(x)
+#   0   1   2   3   4
+#   5   6   7   8   9
+#  10  11  12  13  14
+
+x[1:, ::2] = -99
+#   0   1   2   3   4
+# -99   6 -99   8 -99
+# -99  11 -99  13 -99
+
+y = x.max(axis=1)
+print(y)
+#   4   8  13
+</code></pre>
+<p>In Codon-NumPy, any Codon type can be used as the array type. The <code>numpy</code>
+module has the same aliases that regular NumPy has, like <code>np.int64</code>,
+<code>np.float32</code> etc., but these simply refer to the regular Codon types.</p>
+<style>
+.mdbook-gitbook-hints {
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-left: 0.25em solid var(--mdbook-gitbook-hints-color);
+}
+
+.mdbook-gitbook-hints>*:first-child {
+  margin-top: 0;
+}
+
+.mdbook-gitbook-hints>*:last-child {
+  margin-bottom: 0;
+}
+
+.mdbook-gitbook-hints-icon {
+  display: inline-block;
+  color: var(--mdbook-gitbook-hints-color);
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / 100%;
+  mask: no-repeat center / 100%;
+  -webkit-mask-image: var(--mdbook-gitbook-hints-icon);
+  mask-image: var(--mdbook-gitbook-hints-icon);
+}
+
+/* Icons from https://icon-sets.iconify.design/material-symbols */
+.mdbook-gitbook-hints-info {
+  --mdbook-gitbook-hints-color: rgb(9, 105, 218);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11q-.425 0-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-warning {
+  --mdbook-gitbook-hints-color: rgb(154, 103, 0);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363q-.125-.225-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3q.25 0 .488.125t.387.375l9.25 16q.15.25.138.513t-.138.487q-.125.225-.35.363t-.5.137zm1.725-2h15.1L12 6zM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10q-.425 0-.712.288T11 11v3q0 .425.288.713T12 15m0-2.5"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-danger {
+  --mdbook-gitbook-hints-color: rgb(207, 34, 46);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17m0-4q.425 0 .713-.288T13 12V8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8v4q0 .425.288.713T12 13m-3.35 7H6q-.825 0-1.412-.587T4 18v-2.65L2.075 13.4q-.275-.3-.425-.662T1.5 12q0-.375.15-.737t.425-.663L4 8.65V6q0-.825.588-1.412T6 4h2.65l1.95-1.925q.3-.275.663-.425T12 1.5q.375 0 .738.15t.662.425L15.35 4H18q.825 0 1.413.588T20 6v2.65l1.925 1.95q.275.3.425.663t.15.737q0 .375-.15.738t-.425.662L20 15.35V18q0 .825-.587 1.413T18 20h-2.65l-1.95 1.925q-.3.275-.662.425T12 22.5q-.375 0-.737-.15t-.663-.425zm.85-2l2.5 2.5l2.5-2.5H18v-3.5l2.5-2.5L18 9.5V6h-3.5L12 3.5L9.5 6H6v3.5L3.5 12L6 14.5V18zm2.5-6"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-success {
+  --mdbook-gitbook-hints-color: rgb(26, 127, 55);
+  --mdbook-gitbook-hints-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath fill='%23000' d='M18 2a16 16 0 1 0 16 16A16 16 0 0 0 18 2m0 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14' class='clr-i-outline clr-i-outline-path-1'/%3E%3Cpath fill='%23000' d='M28 12.1a1 1 0 0 0-1.41 0l-11.1 11.05l-6-6A1 1 0 0 0 8 18.53L15.49 26L28 13.52a1 1 0 0 0 0-1.42' class='clr-i-outline clr-i-outline-path-2'/%3E%3Cpath fill='none' d='M0 0h36v36H0z'/%3E%3C/svg%3E");
+}
+
+</style>
+<div class="mdbook-gitbook-hints mdbook-gitbook-hints-warning">
+  <span class="mdbook-gitbook-hints-icon"></span>
+  Using a string (e.g. `"i4"` or `"f8"`) for the dtype is not yet supported.
+</div>
+<h1 id="codon-array-type"><a class="header" href="#codon-array-type">Codon array type</a></h1>
+<p>The Codon array type is parameterized by the array data type ("<code>dtype</code>")
+and the array dimension ("<code>ndim</code>"). That means that, in Codon-NumPy, the
+array dimension is a property of the type, so a 1-d array is a different
+type than a 2-d array and so on:</p>
+<pre><code class="language-python">import numpy as np
+
+arr = np.array([[1.1, 2.2], [3.3, 4.4]])
+print(arr.__class__.__name__)  # ndarray[float,2]
+
+arr = np.arange(10)
+print(arr.__class__.__name__)  # ndarray[int,1]
+</code></pre>
+<p>The array dimension must also be known at compile-time. This allows the
+compiler to perform a wider range of optimizations on array operations.
+Usually, this has no impact on the code as the NumPy functions can
+determine input and output dimensions automatically. However, the dimension
+(and dtype) must be given when, for instance, reading arrays from disk:</p>
+<pre><code class="language-python"># 'dtype' argument specifies array type
+# 'ndim' argument specifies array dimension
+arr = np.load('arr.npy', dtype=float, ndim=3)
+</code></pre>
+<p>A very limited number of NumPy functions return an array whose dimension
+cannot be deduced from its inputs. One such example is <code>squeeze()</code>, which
+removes axes of length 1; since the number of axes of length 1 is not
+determinable at compile-time, this function requires an extra argument that
+indicates which axes to remove.</p>
+<h1 id="python-interoperability"><a class="header" href="#python-interoperability">Python interoperability</a></h1>
+<p>Codon's <code>ndarray</code> type supports Codon's standard Python interoperability API
+(i.e. <code>__to_py__</code> and <code>__from_py__</code> methods), so arrays can be transferred to
+and from Python seamlessly.</p>
+<h2 id="pytorch-integration"><a class="header" href="#pytorch-integration">PyTorch integration</a></h2>
+<p>Because PyTorch tensors and NumPy arrays are interchangeable without copying
+data, it is easy to use Codon to efficiently manipulate or operate on PyTorch
+tensors. This can be achieved either via Codon's just-in-time (JIT) compilation
+mode or via its Python extension mode.</p>
+<h3 id="using-codon-jit"><a class="header" href="#using-codon-jit">Using Codon JIT</a></h3>
+<p>Here is an example showing initializing a $$128 \times 128 \times 128$$ tensor
+$$A$$ such that $$A_{i,j,k} = i + j + k$$:</p>
+<pre><code class="language-python">import numpy as np
+import time
+import codon
+import torch
+
+@codon.jit
+def initialize(arr):
+    for i in range(128):
+        for j in range(128):
+            for k in range(128):
+                arr[i, j, k] = i + j + k
+
+# first call JIT-compiles; subsequent calls use cached JIT'd code
+tensor = torch.empty(128, 128, 128)
+initialize(tensor.numpy())
+
+tensor = torch.empty(128, 128, 128)
+t0 = time.time()
+initialize(tensor.numpy())
+t1 = time.time()
+
+print(tensor)
+print(t1 - t0, 'seconds')
+</code></pre>
+<p>Timings on an M1 MacBook Pro:</p>
+<ul>
+<li>Without <code>@codon.jit</code>: 0.1645 seconds</li>
+<li>With <code>@codon.jit</code>: 0.001485 seconds (<em>110x speedup</em>)</li>
+</ul>
+<p>For more information, see the <a href="../interop/decorator.html">Codon JIT docs</a>.</p>
+<h3 id="using-codon-python-extensions"><a class="header" href="#using-codon-python-extensions">Using Codon Python extensions</a></h3>
+<p>Codon can compile directly to a Python extension module, similar to writing a C
+extension for CPython or using Cython.</p>
+<p>Taking the same example, we can create a file <code>init.py</code>:</p>
+<pre><code class="language-python">import numpy as np
+import numpy.pybridge
+
+def initialize(arr: np.ndarray[np.float32, 3]):
+    for i in range(128):
+        for j in range(128):
+            for k in range(128):
+                arr[i, j, k] = i + j + k
+</code></pre>
+<p>Note that extension module functions need to specify argument types. In this case,
+the argument is a 3-dimensional array of type <code>float32</code>, which is expressed as
+<code>np.ndarray[np.float32, 3]</code> in Codon.</p>
+<p>Now we can use a setup script <code>setup.py</code> to create the extension module as described
+in the <a href="../interop/pyext.html">Codon Python extension docs</a>:</p>
+<pre><code class="language-bash">python3 setup.py build_ext --inplace  # setup.py from docs linked above
+</code></pre>
+<p>Finally, we can call the function from Python:</p>
+<pre><code class="language-python">from codon_initialize import initialize
+import torch
+
+tensor = torch.empty(128, 128, 128)
+initialize(tensor.numpy())
+print(tensor)
+</code></pre>
+<p>Note that there is no compilation happening at runtime with this approach. Instead,
+everything is compiled ahead of time when creating the extension. The timing is the same
+as the first approach.</p>
+<p>You can also use any Codon compilation flags with this approach by adding them to the
+<code>spawn</code> call in the setup script. For example, you can use the <code>-disable-exceptions</code>
+flag to disable runtime exceptions, which can yield performance improvements and generate
+more streamlined code.</p>
+<h1 id="parallel-processing"><a class="header" href="#parallel-processing">Parallel processing</a></h1>
+<p>Unlike Python, Codon has no global interpreter lock ("GIL") and supports full
+multithreading, meaning NumPy code can be parallelized. For example:</p>
+<pre><code class="language-python">import numpy as np
+import numpy.random as rnd
+import time
+
+N = 100000000
+n = 10
+
+rng = rnd.default_rng(seed=0)
+x = rng.normal(size=(N,n))
+y = np.empty(n)
+
+t0 = time.time()
+
+@par(num_threads=n)
+for i in range(n):
+    y[i] = x[:,i].sum()
+
+t1 = time.time()
+
+print(y)
+print(t1 - t0, 'seconds')
+# no par - 1.4s
+# w/ par - 0.4s
+</code></pre>
+<h1 id="gpu-processing"><a class="header" href="#gpu-processing">GPU processing</a></h1>
+<p>Codon-NumPy supports seamless GPU processing: arrays can be passed to and
+from the GPU, and array operations can be performed on the GPU using Codon's
+GPU backend. Here's an example that computes the Mandelbrot set:</p>
+<pre><code class="language-python">import numpy as np
+import gpu
+
+MAX    = 1000  # maximum Mandelbrot iterations
+N      = 4096  # width and height of image
+pixels = np.empty((N, N), int)
+
+def scale(x, a, b):
+    return a + (x/N)*(b - a)
+
+@gpu.kernel
+def mandelbrot(pixels):
+    i = (gpu.block.x * gpu.block.dim.x) + gpu.thread.x
+    j = (gpu.block.y * gpu.block.dim.y) + gpu.thread.y
+    c = complex(scale(j, -2.00, 0.47), scale(i, -1.12, 1.12))
+    z = 0j
+    iteration = 0
+
+    while abs(z) &lt;= 2 and iteration &lt; MAX:
+        z = z**2 + c
+        iteration += 1
+
+    pixels[i, j] = 255 * iteration/MAX
+
+mandelbrot(pixels, grid=(N//32, N//32), block=(32, 32))
+</code></pre>
+<p>Here is the same code using GPU-parallelized <code>for</code>-loops:</p>
+<pre><code class="language-python">import numpy as np
+import gpu
+
+MAX    = 1000  # maximum Mandelbrot iterations
+N      = 4096  # width and height of image
+pixels = np.empty((N, N), int)
+
+def scale(x, a, b):
+    return a + (x/N)*(b - a)
+
+@par(gpu=True, collapse=2)  # &lt;--
+for i in range(N):
+    for j in range(N):
+        c = complex(scale(j, -2.00, 0.47), scale(i, -1.12, 1.12))
+        z = 0j
+        iteration = 0
+
+        while abs(z) &lt;= 2 and iteration &lt; MAX:
+            z = z**2 + c
+            iteration += 1
+
+        pixels[i, j] = 255 * iteration/MAX
+</code></pre>
+<h1 id="linear-algebra"><a class="header" href="#linear-algebra">Linear algebra</a></h1>
+<p>Codon-NumPy fully supports the NumPy linear algebra module which provides
+a comprehensive set of functions for linear algebra operations. Importing
+the linear algebra module, just like in standard NumPy:</p>
+<pre><code class="language-python">import numpy.linalg as LA
+</code></pre>
+<p>For example, the <code>eig()</code> function computes the eigenvalues and eigenvectors
+of a square matrix:</p>
+<pre><code class="language-python">eigenvalues, eigenvectors = LA.eig(np.diag((1, 2, 3)))
+print(eigenvalues)
+# 1.+0.j 2.+0.j 3.+0.j
+
+print(eigenvectors)
+# [[1.+0.j 0.+0.j 0.+0.j]
+#  [0.+0.j 1.+0.j 0.+0.j]
+#  [0.+0.j 0.+0.j 1.+0.j]]
+</code></pre>
+<p>Just like standard NumPy, Codon will use an optimized BLAS library under the
+hood to implement many linear algebra operations. This defaults to OpenBLAS
+on Linux and Apple's Accelerate framework on macOS.</p>
+<p>Because Codon supports full multithreading, it's possible to use outer-loop
+parallelism to perform linear algebra operations in parallel. Here's an example
+that multiplies several matrices in parallel:</p>
+<pre><code class="language-python">import numpy as np
+import numpy.random as rnd
+import time
+
+N = 5000
+n = 10
+rng = rnd.default_rng(seed=0)
+a = rng.normal(size=(n, N, N))
+b = rng.normal(size=(n, N, N))
+y = np.empty((n, N, N))
+t0 = time.time()
+
+@par(num_threads=n)
+for i in range(n):
+    y[i, :, :] = a[i, :, :] @ b[i, :, :]
+
+t1 = time.time()
+print(y.sum())
+print(t1 - t0, 'seconds')  # Python - 53s
+                           # Codon  -  6s
+</code></pre>
+<style>
+.mdbook-gitbook-hints {
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-left: 0.25em solid var(--mdbook-gitbook-hints-color);
+}
+
+.mdbook-gitbook-hints>*:first-child {
+  margin-top: 0;
+}
+
+.mdbook-gitbook-hints>*:last-child {
+  margin-bottom: 0;
+}
+
+.mdbook-gitbook-hints-icon {
+  display: inline-block;
+  color: var(--mdbook-gitbook-hints-color);
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / 100%;
+  mask: no-repeat center / 100%;
+  -webkit-mask-image: var(--mdbook-gitbook-hints-icon);
+  mask-image: var(--mdbook-gitbook-hints-icon);
+}
+
+/* Icons from https://icon-sets.iconify.design/material-symbols */
+.mdbook-gitbook-hints-info {
+  --mdbook-gitbook-hints-color: rgb(9, 105, 218);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11q-.425 0-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-warning {
+  --mdbook-gitbook-hints-color: rgb(154, 103, 0);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363q-.125-.225-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3q.25 0 .488.125t.387.375l9.25 16q.15.25.138.513t-.138.487q-.125.225-.35.363t-.5.137zm1.725-2h15.1L12 6zM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10q-.425 0-.712.288T11 11v3q0 .425.288.713T12 15m0-2.5"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-danger {
+  --mdbook-gitbook-hints-color: rgb(207, 34, 46);
+  --mdbook-gitbook-hints-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17m0-4q.425 0 .713-.288T13 12V8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8v4q0 .425.288.713T12 13m-3.35 7H6q-.825 0-1.412-.587T4 18v-2.65L2.075 13.4q-.275-.3-.425-.662T1.5 12q0-.375.15-.737t.425-.663L4 8.65V6q0-.825.588-1.412T6 4h2.65l1.95-1.925q.3-.275.663-.425T12 1.5q.375 0 .738.15t.662.425L15.35 4H18q.825 0 1.413.588T20 6v2.65l1.925 1.95q.275.3.425.663t.15.737q0 .375-.15.738t-.425.662L20 15.35V18q0 .825-.587 1.413T18 20h-2.65l-1.95 1.925q-.3.275-.662.425T12 22.5q-.375 0-.737-.15t-.663-.425zm.85-2l2.5 2.5l2.5-2.5H18v-3.5l2.5-2.5L18 9.5V6h-3.5L12 3.5L9.5 6H6v3.5L3.5 12L6 14.5V18zm2.5-6"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-gitbook-hints-success {
+  --mdbook-gitbook-hints-color: rgb(26, 127, 55);
+  --mdbook-gitbook-hints-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath fill='%23000' d='M18 2a16 16 0 1 0 16 16A16 16 0 0 0 18 2m0 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14' class='clr-i-outline clr-i-outline-path-1'/%3E%3Cpath fill='%23000' d='M28 12.1a1 1 0 0 0-1.41 0l-11.1 11.05l-6-6A1 1 0 0 0 8 18.53L15.49 26L28 13.52a1 1 0 0 0 0-1.42' class='clr-i-outline clr-i-outline-path-2'/%3E%3Cpath fill='none' d='M0 0h36v36H0z'/%3E%3C/svg%3E");
+}
+
+</style>
+<div class="mdbook-gitbook-hints mdbook-gitbook-hints-warning">
+  <span class="mdbook-gitbook-hints-icon"></span>
+  When using Codon's outer-loop parallelism, make sure to set the environment
+variable `OPENBLAS_NUM_THREADS` to 1 (i.e. `export OPENBLAS_NUM_THREADS=1`)
+to avoid conflicts with OpenBLAS multithreading.
+</div>
+<h1 id="numpy-specific-compiler-optimizations"><a class="header" href="#numpy-specific-compiler-optimizations">NumPy-specific compiler optimizations</a></h1>
+<p>Codon includes compiler passes that optimize NumPy code through methods like
+operator fusion, which combine distinct operations so that they can be executed
+during a single pass through the argument arrays, saving both execution time and
+memory (since intermediate arrays no longer need to be allocated).</p>
+<p>To showcase this, here's a simple NumPy program that approximates $$\pi$$.
+The code below generates two random vectors $$x$$ and $$y$$ with entries in the
+range $$[0, 1)$$ and computes the fraction of pairs of points that lie in the
+circle of radius $$0.5$$ centered at $$(0.5, 0.5)$$, which is approximately
+$$\pi \over 4$$.</p>
+<pre><code class="language-python">import time
+import numpy as np
+
+rng = np.random.default_rng(seed=0)
+x = rng.random(500_000_000)
+y = rng.random(500_000_000)
+
+t0 = time.time()
+# pi ~= 4 x (fraction of points in circle)
+pi = ((x-1)**2 + (y-1)**2 &lt; 1).sum() * (4 / len(x))
+t1 = time.time()
+
+print(pi)
+print(t1 - t0, 'seconds')
+</code></pre>
+<p>The expression <code>(x-1)**2 + (y-1)**2 &lt; 1</code> gets fused by Codon so that it is
+executed in just a single pass over the <code>x</code> and <code>y</code> arrays, rather than in
+multiple passes for each sub-expression <code>x-1</code>, <code>y-1</code> etc. as is the case with
+standard NumPy.</p>
+<p>Here are the resulting timings on an M1 MacBook Pro:</p>
+<ul>
+<li>Python / standard NumPy: 2.4 seconds</li>
+<li>Codon: 0.42 seconds (<em>6x speedup</em>)</li>
+</ul>
+<p>You can display information about fused expressions by using the <code>-npfuse-verbose</code>
+flag of <code>codon</code>, as in <code>codon run -release -npfuse-verbose pi.py</code>. Here's the
+output for the program above:</p>
+<pre><code>Optimizing expression at pi.py:10:7
+lt &lt;array[bool, 1]&gt; [cost=6]
+  add &lt;array[f64, 1]&gt; [cost=5]
+    pow &lt;array[f64, 1]&gt; [cost=2]
+      sub &lt;array[f64, 1]&gt; [cost=1]
+        a0 &lt;array[f64, 1]&gt;
+        a1 &lt;i64&gt;
+      a2 &lt;i64&gt;
+    pow &lt;array[f64, 1]&gt; [cost=2]
+      sub &lt;array[f64, 1]&gt; [cost=1]
+        a3 &lt;array[f64, 1]&gt;
+        a4 &lt;i64&gt;
+      a5 &lt;i64&gt;
+  a6 &lt;i64&gt;
+
+-&gt; static fuse:
+lt &lt;array[bool, 1]&gt; [cost=6]
+  add &lt;array[f64, 1]&gt; [cost=5]
+    pow &lt;array[f64, 1]&gt; [cost=2]
+      sub &lt;array[f64, 1]&gt; [cost=1]
+        a0 &lt;array[f64, 1]&gt;
+        a1 &lt;i64&gt;
+      a2 &lt;i64&gt;
+    pow &lt;array[f64, 1]&gt; [cost=2]
+      sub &lt;array[f64, 1]&gt; [cost=1]
+        a3 &lt;array[f64, 1]&gt;
+        a4 &lt;i64&gt;
+      a5 &lt;i64&gt;
+  a6 &lt;i64&gt;
+</code></pre>
+<p>As shown, the optimization pass employs a cost model to decide how to best handle
+a given expression, be it by fusing or evaluating sequentially. You can adjust the
+fusion cost thresholds via the following flags:</p>
+<ul>
+<li><code>-npfuse-always &lt;cost1&gt;</code>: Expression cost below which to always fuse a given
+expression (default: <code>10</code>).</li>
+<li><code>-npfuse-never &lt;cost2&gt;</code>: Expression cost above which (&gt;) to never fuse a given
+expression (default: <code>50</code>).</li>
+</ul>
+<p>Given an expression cost <code>C</code>, the logic implemented in the pass is to:</p>
+<ul>
+<li>Always fuse expressions where <code>C &lt;= cost1</code>.</li>
+<li>Fuse expressions where <code>cost1 &lt; C &lt;= cost2</code> if there is no broadcasting involved.</li>
+<li>Never fuse expressions where <code>C &gt; cost2</code> and instead evaluate them sequentially.</li>
+</ul>
+<p>This logic is applied recursively to a given expression to determine the optimal
+evaluation strategy.</p>
+<p>You can disable these optimizations altogether by disabling the corresponding
+compiler pass via the flag <code>-disable-opt core-numpy-fusion</code>.</p>
+<h1 id="io"><a class="header" href="#io">I/O</a></h1>
+<p>Codon-NumPy supports most of NumPy's I/O API. One important difference, however,
+is that I/O functions must specify the dtype and dimension of arrays being read,
+since Codon-NumPy array types are parameterized by dtype and dimension:</p>
+<pre><code class="language-python">import numpy as np
+
+a = np.arange(27, dtype=np.int16).reshape(3, 3, 3)
+np.save('arr.npy', a)
+
+# Notice the 'dtype' and 'ndim' arguments:
+b = np.load('arr.npy', dtype=np.int16, ndim=3)
+</code></pre>
+<p>Writing arrays has no such requirement.</p>
+<h1 id="datetimes"><a class="header" href="#datetimes">Datetimes</a></h1>
+<p>Codon-NumPy fully supports NumPy's datetime types: <code>datetime64</code> and <code>timedelta64</code>.
+One difference from standard NumPy is how these types are specified. Here's an example:</p>
+<pre><code class="language-python"># datetime64 type with units of "1 day"
+# same as "dtype='datetime64[D]'" in standard NumPy
+dt = np.array(['2020-01-02', '2021-09-15', '2022-07-01'],
+              dtype=np.datetime64['D', 1])
+
+# timedelta64 type with units of "15 minutes"
+# same as "dtype='timedelta64[15m]'" in standard NumPy
+td = np.array([100, 200, 300], dtype=np.timedelta64['m', 15])
+</code></pre>
+<h1 id="passing-array-data-to-cc"><a class="header" href="#passing-array-data-to-cc">Passing array data to C/C++</a></h1>
+<p>You can pass an <code>ndarray</code>'s underlying data pointer to a C/C++ function by using
+the <code>data</code> attribute of the array. For example:</p>
+<pre><code class="language-python">from C import foo(p: Ptr[float], n: int)
+
+arr = np.ndarray([1.0, 2.0, 3.0])
+foo(arr.data, arr.size)
+</code></pre>
+<p>Of course, it's the caller's responsibility to make sure the array is contiguous
+as needed and/or pass additional shape or stride information. See the
+<a href="../interop/cpp.html">C interoperability</a> docs for more information.</p>
+<h2 id="array-abi"><a class="header" href="#array-abi">Array ABI</a></h2>
+<p>The <code>ndarray[dtype, ndim]</code> data structure has three fields, in the following order:</p>
+<ul>
+<li><code>shape</code>: length-<code>ndim</code> tuple of non-negative 64-bit integers representing the array
+shape</li>
+<li><code>strides</code>: length-<code>ndim</code> tuple of 64-bit integers representing the stride in bytes
+along each axis of the array</li>
+<li><code>data</code>: pointer of type <code>dtype</code> to the array's data</li>
+</ul>
+<p>For example, <code>ndarray[np.float32, 3]</code> would correspond to the following C structure:</p>
+<pre><code class="language-c">struct ndarray_float32_3 {
+  int64_t shape[3];
+  int64_t strides[3];
+  float *data;
+};
+</code></pre>
+<p>This can be used to pass an entire <code>ndarray</code> object to a C function without breaking
+it up into its constituent components.</p>
+<h1 id="performance-tips"><a class="header" href="#performance-tips">Performance tips</a></h1>
+<h2 id="array-layouts"><a class="header" href="#array-layouts">Array layouts</a></h2>
+<p>As with standard NumPy, Codon-NumPy performs best when array data is contiguous in
+memory, ideally in row-major order (also called "C order"). Most NumPy functions will
+return C-order arrays, but operations like slicing and transposing arrays can alter
+contiguity. You can use <code>numpy.ascontiguousarray()</code> to create a contiguous array from
+an arbitrary array.</p>
+<h2 id="linux-huge-pages"><a class="header" href="#linux-huge-pages">Linux huge pages</a></h2>
+<p>When working with large arrays on Linux, enabling
+<a href="https://www.kernel.org/doc/html/latest/admin-guide/mm/transhuge.html">transparent hugepages</a>
+can result in significant performance improvements.</p>
+<p>You can check if transparent hugepages are enabled via</p>
+<pre><code class="language-bash">cat /sys/kernel/mm/transparent_hugepage/enabled
+</code></pre>
+<p>and you can enable them via</p>
+<pre><code class="language-bash">echo "always" | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
+</code></pre>
+<h2 id="disabling-exceptions"><a class="header" href="#disabling-exceptions">Disabling exceptions</a></h2>
+<p>By default, Codon performs various validation checks at runtime (e.g. bounds checks when
+indexing an array) just like standard NumPy, and raises an exception if they fail. If
+you know your program will not raise or catch any exceptions, you can disable these
+checks through the <code>-disable-exceptions</code> compiler flag.</p>
+<p>Note that when using this flag, raising an exception will terminate the process with a
+<code>SIGTRAP</code>.</p>
+<h2 id="fast-math"><a class="header" href="#fast-math">Fast-math</a></h2>
+<p>You can enable "fast-math" optimizations via the <code>-fast-math</code> compiler flag. It is
+advisable to <strong>use this flag with caution</strong> as it changes floating point semantics and
+makes assumptions regarding <code>inf</code> and <code>nan</code> values. For more information, consult LLVM's
+documentation on <a href="https://llvm.org/docs/LangRef.html#fast-math-flags">fast-math flags</a>.</p>
+<h1 id="not-yet-supported"><a class="header" href="#not-yet-supported">Not-yet-supported</a></h1>
+<p>The following features of NumPy are not yet supported, but are planned for the future:</p>
+<ul>
+<li>String operations</li>
+<li>Masked arrays</li>
+<li>Polynomials</li>
+</ul>
+<p>A few miscellaneous Python-specific functions like <code>get_include()</code> are also not
+supported, as they are not applicable in Codon.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../language/llvm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../interop/python.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../language/llvm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../interop/python.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
