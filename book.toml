@@ -6,3 +6,4 @@ title = "Codon Docs"
 [output.html]
 mathjax-support = true
 [preprocessor.gitbook]
+[preprocessor.emojicodes]
